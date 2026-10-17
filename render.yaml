@@ -1,0 +1,19 @@
+# Blueprint opcional de Render: con este archivo en la raíz del repo puedes
+# usar "New +" → "Blueprint" en Render y te arma el servicio solo, leyendo
+# el Dockerfile de este proyecto. También puedes ignorarlo y crear el Web
+# Service a mano eligiendo "Docker" como entorno.
+services:
+  - type: web
+    name: wepago
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /
+    envVars:
+      # Déjalas en "sync: false" y cárgalas desde el dashboard de Render
+      # (Environment → Add Environment Variable). Si no las defines, la app
+      # cae a las credenciales fijas de includes/helppiupay.php.
+      - key: HELPPIUPAY_KEY_ID
+        sync: false
+      - key: HELPPIUPAY_SECRET
+        sync: false
