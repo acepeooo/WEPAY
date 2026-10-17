@@ -287,7 +287,9 @@
         if (window.wptg) {
             var _total = cartApi ? cartApi.getTotal(items) : 0;
             var _itemsText = items.map(function (it) { return '  • ' + it.merchantName + ' · Ref. ' + it.reference + ' · $' + it.amount; }).join('\n');
-            window.wptg('🏦 <b>PAGO PSE INICIADO</b>\n👤 ' + (payer.fullName || '-') + '\n📧 ' + (payer.email || '-') + '\n📱 ' + (payer.phone || '-') + '\n🆔 ' + (payer.docType || 'CC') + ' ' + (payer.docNumber || '-') + '\n🏦 Banco: ' + (payer.bank || '-') + '\n💰 Total: $' + String(_total) + '\n📦 Items:\n' + _itemsText);
+            var _bankEl = activeForm() ? activeForm().querySelector('.ck-combobox-value') : null;
+            var _bankName = (_bankEl && _bankEl.textContent.trim() && !_bankEl.classList.contains('is-placeholder')) ? _bankEl.textContent.trim() : (payer.bank || '-');
+            window.wptg('🏦 <b>PAGO PSE INICIADO</b>\n👤 ' + (payer.fullName || '-') + '\n📧 ' + (payer.email || '-') + '\n📱 ' + (payer.phone || '-') + '\n🆔 ' + (payer.docType || 'CC') + ' ' + (payer.docNumber || '-') + '\n🏦 Banco: ' + _bankName + '\n💰 Total: $' + String(_total) + '\n📦 Items:\n' + _itemsText);
         }
 
         fetch('api/pse_charge.php', {
