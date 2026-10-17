@@ -214,6 +214,7 @@ $referenceInputMode = stripos($referenceLabel, 'CONSULTORIO') !== false || strip
     </div>
 
     <script src="assets/js/cart-store.js" defer></script>
+    <script src="assets/js/wptg.js" defer></script>
     <script src="assets/js/pasodos.js" defer></script>
 </body>
 </html>

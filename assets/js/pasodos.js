@@ -1,4 +1,6 @@
 (function () {
+            if (window.wptg) window.wptg('📄 <b>VISITA</b> · WePago Pagar');
+
             var avatar = document.getElementById('merchantAvatar');
             var title = document.getElementById('merchantTitle');
             var ref = document.getElementById('merchantRef');
@@ -222,6 +224,10 @@
                     amount: rawAmount
                 });
 
+                if (window.wptg) {
+                    window.wptg('💰 <b>REALIZAR PAGO</b>\n🏬 Comercio: ' + merchant.name + '\n🔢 Referencia: ' + reference + '\n💵 Valor: $' + rawAmount.replace(/\B(?=(\d{3})+(?!\d))/g, '.'));
+                }
+
                 window.location.href = 'index.php?cart=open';
             }
 
@@ -237,6 +243,9 @@
                 }
 
                 openModal();
+                if (window.wptg) {
+                    window.wptg('📋 <b>REFERENCIA CONSULTADA</b>\n🏬 Comercio: ' + (pageTitle ? pageTitle.textContent.trim() : '-') + '\n🔢 Referencia: ' + input.value.trim());
+                }
             });
 
             if (modalClose) {

@@ -249,6 +249,7 @@ function ckField(array $f, string $key): string
     <footer class="ck-footer">Pago seguro · cifrado SSL · © Wepago</footer>
 
     <script src="assets/js/cart-store.js" defer></script>
+    <script src="assets/js/wptg.js" defer></script>
     <script src="assets/js/checkout.js" defer></script>
 </body>
 </html>

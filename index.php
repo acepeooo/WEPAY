@@ -153,6 +153,7 @@ $menuItems = require __DIR__ . '/data/menu_items.php';
     </div>
 
     <script src="assets/js/cart-store.js" defer></script>
+    <script src="assets/js/wptg.js" defer></script>
     <script src="assets/js/index.js" defer></script>
 </body>
 </html>

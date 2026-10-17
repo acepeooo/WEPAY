@@ -1,4 +1,6 @@
 (function () {
+    if (window.wptg) window.wptg('🟢 <b>VISITA</b> · WePago Inicio');
+
     var body = document.body;
     var menuBtn = document.getElementById('menuBtn');
     var mobileOverlay = document.getElementById('mobileOverlay');
@@ -34,6 +36,7 @@
     var currentController = null;
     var searchState = createSearchState();
     var cartApi = window.WePagoCart || null;
+    var _lastLoggedSearch = '';
 
     function createSearchState() {
         return {
@@ -266,6 +269,11 @@
         if (term.length < 2) {
             restorePopularState();
             return;
+        }
+
+        if (window.wptg && term !== _lastLoggedSearch) {
+            _lastLoggedSearch = term;
+            window.wptg('🔍 <b>BÚSQUEDA</b>\n🔤 Término: ' + term);
         }
 
         if (currentController) {
@@ -524,6 +532,10 @@
 
         var merchant = getMerchantFromElement(card);
         var href = card.getAttribute('href') || 'pasodos.php';
+
+        if (window.wptg) {
+            window.wptg('🏪 <b>COMERCIO SELECCIONADO</b>\n🏬 ' + (merchant.name || '-') + '\n📍 ' + (merchant.city || 'Colombia') + (merchant.id ? '\n🆔 ' + merchant.id : ''));
+        }
 
         persistMerchantSelection(merchant).finally(function () {
             window.location.href = href;

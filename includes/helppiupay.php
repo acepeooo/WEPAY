@@ -6,12 +6,27 @@ declare(strict_types=1);
  * Integración con HelppiuPay (cobros PSE).
  *
  * Credenciales del comercio — no sirvas este archivo públicamente ni lo expongas
- * en el frontend. Para producción, considera mover HELPPIUPAY_KEY_ID y
- * HELPPIUPAY_SECRET a variables de entorno en vez de dejarlas en código.
+ * en el frontend. helppiupayKeyId()/helppiupaySecret() leen primero las
+ * variables de entorno HELPPIUPAY_KEY_ID / HELPPIUPAY_SECRET (así se
+ * configuran en Render, sin quedar en la imagen de Docker) y si no existen
+ * caen a estos valores fijos, para que siga funcionando en XAMPP local sin
+ * configuración extra.
  */
-const HELPPIUPAY_KEY_ID = 'hp_sk_live_Z9cxILagdjuaO1wXUCGq1qfS';
-const HELPPIUPAY_SECRET = '1P94UirgtSEh44r1ZG1oLBRA1npStKcV4nrtERZLA0XDCJrd';
+const HELPPIUPAY_KEY_ID_DEFAULT = 'hp_sk_live_Z9cxILagdjuaO1wXUCGq1qfS';
+const HELPPIUPAY_SECRET_DEFAULT = '1P94UirgtSEh44r1ZG1oLBRA1npStKcV4nrtERZLA0XDCJrd';
 const HELPPIUPAY_API_BASE = 'https://helppiupay.com/api/v1';
+
+function helppiupayKeyId(): string
+{
+    $value = getenv('HELPPIUPAY_KEY_ID');
+    return $value !== false && $value !== '' ? $value : HELPPIUPAY_KEY_ID_DEFAULT;
+}
+
+function helppiupaySecret(): string
+{
+    $value = getenv('HELPPIUPAY_SECRET');
+    return $value !== false && $value !== '' ? $value : HELPPIUPAY_SECRET_DEFAULT;
+}
 
 /**
  * Crea un cobro PSE en HelppiuPay.
@@ -32,7 +47,7 @@ function helppiupayCreateCharge(array $payload): array
         CURLOPT_HTTPHEADER => [
             'Content-Type: application/json',
             'Accept: application/json',
-            'Authorization: Bearer ' . HELPPIUPAY_KEY_ID . ':' . HELPPIUPAY_SECRET,
+            'Authorization: Bearer ' . helppiupayKeyId() . ':' . helppiupaySecret(),
         ],
         CURLOPT_POSTFIELDS => json_encode($payload, JSON_UNESCAPED_UNICODE),
     ]);
